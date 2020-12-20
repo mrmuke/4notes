@@ -1,7 +1,7 @@
 from pydub import AudioSegment
 import matplotlib.pyplot as plt
 import numpy as np
-from methods import classify_note, frequency_spectrum 
+from deotect_notes import classify_note, frequency_spectrum 
 from output import playMelody
 song = AudioSegment.from_file("cmajor.wav")
 SEGMENT_MS = 50

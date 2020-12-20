@@ -8,6 +8,8 @@ from keras.layers import BatchNormalization as BatchNorm
 from keras.layers import Activation
 import os
 import pickle
+import uuid
+
 def create_network(network_input, pitches):
     model = Sequential()
     model.add(LSTM(
@@ -29,7 +31,7 @@ def create_network(network_input, pitches):
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
     # Load the weights to each node
-    model.load_weights('weights-improvement-27-3.5857-bigger.hdf5')
+    model.load_weights('weights-improvement-51-1.8233-bigger.hdf5')
 
     return model
 
@@ -56,26 +58,11 @@ def prepare_sequences(notes, pitchnames, pitches):
     return (network_input, normalized_input)
 
 def generate_notes(model, network_input, pitchnames, pitches):
-    """ # pick a random sequence from the input as a starting point for the prediction
-    start = numpy.random.randint(0, len(network_input)-1)
 
-    int_to_note = dict((number, note) for number, note in enumerate(pitchnames))
-
-    pattern = network_input[start]
-    prediction_output = []
-
-    # generate 500 notes
-    for note_index in range(50):
-        prediction_input = numpy.reshape(pattern, (1, len(pattern), 1))
-        prediction_input = prediction_input / float(pitches)
-        prediction = model.predict(prediction_input, verbose=0)
-        index = numpy.argmax(prediction)
-        result = int_to_note[index]
-        prediction_output.append(result)
-        pattern.append(index)
-        pattern = pattern[1:len(pattern)] """
+    # pick a random sequence from the input as a starting point for the prediction
     start = numpy.random.randint(0, len(network_input)-1)
     int_to_note = dict((number, note) for number, note in enumerate(pitchnames))
+    print(int_to_note)
     pattern = network_input[start]
     prediction_output = []
     # generate 500 notes
@@ -122,16 +109,18 @@ def create_midi(prediction_output):
         offset += 0.5
 
     midi_stream = stream.Stream(output_notes)
+    name='music'+str(uuid.uuid4())+'.mid'
+    midi_stream.write('midi', fp=name)
+    return name
+def generate_music():
+    with open('notes', 'rb') as filepath:
+        notes = pickle.load(filepath)
 
-    midi_stream.write('midi', fp='test_output.mid')
-    
-with open('notes', 'rb') as filepath:
-    notes = pickle.load(filepath)
-
-pitchnames = sorted(set(item for item in notes))
-# Get all pitch names
-pitches = len(set(notes))
-network_input, normalized_input = prepare_sequences(notes, pitchnames, pitches)
-model = create_network(normalized_input, pitches)
-prediction_output = generate_notes(model, network_input, pitchnames, pitches)
-create_midi(prediction_output)
+    pitchnames = sorted(set(item for item in notes))
+    # Get all pitch names
+    pitches = len(set(notes))
+    network_input, normalized_input = prepare_sequences(notes, pitchnames, pitches)
+    model = create_network(normalized_input, pitches)
+    prediction_output = generate_notes(model, network_input, pitchnames, pitches)
+    filename = create_midi(prediction_output)
+    return filename
