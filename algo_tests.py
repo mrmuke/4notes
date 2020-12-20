@@ -222,6 +222,7 @@ def fitness(genome: Genome,  num_bars: int, num_notes: int, num_steps: int,
 #4 notes and generate based on genre random with machine learning and rate = true happiness
 #show sheet music at eend
 #use flask
+#create.... out of notnhing
 @click.command()
 @click.option("--num-bars", default=8, prompt='Number of bars:', type=int)
 @click.option("--num-notes", default=8, prompt='Notes per bar:', type=int)
@@ -282,4 +283,3 @@ def genetic_algo(num_bars: int, num_notes: int, num_steps: int, pauses: bool, ke
     running = input("continue? [Y/n]") != "n"
     population = next_generation
 
-genetic_algo()

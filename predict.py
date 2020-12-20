@@ -31,7 +31,7 @@ def create_network(network_input, pitches):
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
     # Load the weights to each node
-    model.load_weights('weights-improvement-51-1.8233-bigger.hdf5')
+    model.load_weights('final_weight.hdf5')
 
     return model
 
@@ -66,7 +66,7 @@ def generate_notes(model, network_input, pitchnames, pitches):
     pattern = network_input[start]
     prediction_output = []
     # generate 500 notes
-    for note_index in range(100):#500):
+    for note_index in range(30):#500):
         print(prediction_output)
         prediction_input = numpy.reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(pitches)
@@ -80,7 +80,7 @@ def generate_notes(model, network_input, pitchnames, pitches):
         
 
     return prediction_output
-def create_midi(prediction_output):
+def create_midi(prediction_output,folder):
     #convert the output from the prediction to notes and create a midi file from the notes!!!
     offset = 0
     output_notes = []
@@ -109,10 +109,12 @@ def create_midi(prediction_output):
         offset += 0.5
 
     midi_stream = stream.Stream(output_notes)
-    name='music'+str(uuid.uuid4())+'.mid'
+    if not os.path.exists('static/'+folder):
+        os.mkdir('static/'+folder)
+    name='static/'+folder+'/music-'+str((uuid.uuid4()))+'.mid'
     midi_stream.write('midi', fp=name)
     return name
-def generate_music():
+def generate_music(folder):
     with open('notes', 'rb') as filepath:
         notes = pickle.load(filepath)
 
@@ -122,5 +124,5 @@ def generate_music():
     network_input, normalized_input = prepare_sequences(notes, pitchnames, pitches)
     model = create_network(normalized_input, pitches)
     prediction_output = generate_notes(model, network_input, pitchnames, pitches)
-    filename = create_midi(prediction_output)
+    filename = create_midi(prediction_output,folder)
     return filename

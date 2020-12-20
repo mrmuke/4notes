@@ -1,7 +1,7 @@
 from random import choices, randint, randrange, random, sample
 from typing import List, Optional, Callable, Tuple
-
-Genome = List[int]
+from music21 import note
+Genome = List[note.Note]
 Population = List[Genome]
 FitnessFunc = Callable[[Genome], int]
 def generate_genome(length: int) -> Genome:
@@ -22,7 +22,7 @@ def single_point_crossover(a: Genome, b: Genome) -> Tuple[Genome, Genome]:
 def mutation(genome: Genome, num: int = 1, probability: float = 0.5) -> Genome:
     for _ in range(num):
         index = randrange(len(genome))
-        genome[index] = genome[index] if random() > probability else abs(genome[index] - 1)
+        genome[index] = genome[index] if random() > probability else genome[index-1]
     return genome
 
 

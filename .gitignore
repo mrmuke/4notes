@@ -1,1 +1,5 @@
 data/
+detect_notes.py
+cmajor.wav
+algo_tests.py
+read_music_file.py

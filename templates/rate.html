@@ -1,6 +1,41 @@
+<!doctype html>
 
 <div
 style="background-image: url({{ url_for('static', filename='background.jpg') }}); height:100vh; background-size:cover; display:flex;flex-direction:column;align-items:center; justify-content:center">
     <h1>Rate Generated Music</h1>
+    <form action="{{ url_for('handle_rate',id=id) }}" method="post" style="display:flex;align-items: center;">
+        <div>
+    {% for song in songs %}
+    <h2>{{song[:10]}}...</h2>
+    <div style="display: flex;"><input placeholder="Rating out of 10..." name={{song}}/><p>/10</p></div>
+    <EMBED SRC="{{ url_for('static', filename=id+'/'+song) }}" hidden=true autostart=true loop=1>
     
+    {% endfor %}</div>
+    <div style="margin:25px">
+    <p>Get the perfect composition <br>with a mix of your tastes!</p>
+        <input type="submit" value="Get Next Generation!"></div>
+    </form>
 </div>  
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Poppins:300,400,500,600,700&display=swap");
+
+    body {
+        font-family: "Open Sans", sans-serif;
+        color: white;
+        margin: 0px
+    }
+
+    input{
+        padding:12px;
+        border-radius: 10px;
+        border:5px solid #cecece;
+        margin-right:10px
+    }
+    input:focus{
+        outline:none
+    }
+
+    input[type="submit"]:hover{
+        cursor: pointer;
+    }
+    </style>
