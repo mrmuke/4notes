@@ -1,4 +1,4 @@
-##server.py is where Flask is located
+## server.py is where Flask is located
 
 ## Inspiration
 **I always thought musicians and artists would be the last to have their jobs replaced by machines** I saw this youtube video online of a little girl, who was told of 4 notes, and she had to compose a piece out of it. I was astonished by the masterpiece she composed on the spot and her talent, and as a pianist and coder, I became quite interested in the power of machines to create and wanted to see the extent to which I could reach in creating concert-level pieces in music. Composing music is hard, and I want to help fellow musicians find inspiration. **If machines can never truly understand music, then why don't we work with them to create out of nothing like we do?**
